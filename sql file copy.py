@@ -8,7 +8,8 @@ filename = "userDB.db"
 conn = sqlite3.connect(filename)
 cursor = conn.cursor()
 
-cursor.execute("INSERT INTO")
+cursor.execute("SELECT * from User")
+conn.commit()
 
 rows = cursor.fetchall()
 

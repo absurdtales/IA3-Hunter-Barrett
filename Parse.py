@@ -4,7 +4,7 @@ import json
 import sqlite3
 import os
 reqAPI = API()
-class Parse:
+class parsing:
     def __init__(self):
             
             """
@@ -21,20 +21,26 @@ class Parse:
                 # if db is present connect to it
                 self.conn = sqlite3.connect(self.filename)
                 self.cursor = self.conn.cursor()
-    def parse(self, t=0):
-        parse=json.loads(requests.get("https://akabab.github.io/superhero-api/api/all.json").text)
+    def parsing(self, t=0):
+        # get json data and transform into text
+        parsing = json.loads(requests.get("https://akabab.github.io/superhero-api/api/all.json").text)
+        # continue this loop for 20 entries
         while t <= 20:
             t+=1
-            if reqAPI.request(t, parse) != False:
-                Aparams = (reqAPI.request(t, parse)[2], t)
-                Sparams = (reqAPI.request(t, parse)[1], reqAPI.request(t, parse)[3], reqAPI.request(t, parse)[4], reqAPI.request(t, parse)[5], reqAPI.request(t, parse)[6], reqAPI.request(t, parse)[7], reqAPI.request(t, parse)[8], reqAPI.request(t, parse)[9])
+            if reqAPI.request(t, parsing) != False:
+                # set alias table parameters as text lines from API
+                AliasParameters = (reqAPI.request(t, parsing)[2], t)
+                # set superhero table parameters as text lines from API
+                SuperheroParameters = (reqAPI.request(t, parsing)[1], reqAPI.request(t, parsing)[3], reqAPI.request(t, parsing)[4], reqAPI.request(t, parsing)[5], reqAPI.request(t, parsing)[6], reqAPI.request(t, parsing)[7], reqAPI.request(t, parsing)[8], reqAPI.request(t, parsing)[9])
+                # insert parameters into alias database
                 self.cursor.execute("""
                 INSERT INTO Alias (
                     name,
                     superhero
                 )
                 VALUES (?, ?)
-                """, Aparams)
+                """, AliasParameters)
+                # insert parameters into superhero database
                 self.cursor.execute("""
                 INSERT INTO Superhero (
                     name,
@@ -47,7 +53,7 @@ class Parse:
                     image
                 )
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                """, Sparams)
+                """, SuperheroParameters)
                 self.conn.commit()
             else:
                 t+=1

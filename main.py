@@ -3,6 +3,7 @@ from Parse import Parse
 from UserLogin import User
 cParse = Parse()
 cUser = User()
+cParse.parse()
 access = False
 while access == False:
     result = input("Would you like to login or Register ")
