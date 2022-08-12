@@ -1,7 +1,7 @@
 from APIrequest import API
-from Parse import Parse
+from Parse import parsing
 from UserLogin import User
-cParse = Parse()
+cParse = parsing()
 cUser = User()
 cParse.parse()
 access = False
